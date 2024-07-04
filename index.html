@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="refresh" content="1"> -->
+    <title>to-do app</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body onload="toDoList()">
+    <header>
+
+    </header>
+    <main>
+        <section>
+            <div class="toDo_input">
+                <h1>Hello there !</h1>
+                <h2>Lets plan <strong>#TODAY</strong></h2>
+                <h1>Create your TO-DO list.</h1>
+
+                <textarea type="text" name="to-do" id="toDo" placeholder="Add TO-DO Title here.&#10;eg. Work on 'portfolio' project, Go to gym, Start to learn react, etc." rows="4" cols="50" required></textarea>
+                <br>
+                <textarea name="desc" id="desc" placeholder="Add DESCRIPTION for the TO-DO." rows="4" cols="50" required></textarea>
+                <br>
+                <div id="toDoWarn"></div>
+                <input type="radio" id="imp" name="priority">
+                <label for="imp" title="Important : Must to do with Higher Priority.">Important</label>
+                <input type="radio" name="priority" id="gen" checked>
+                <label for="gen" title="General : You should do till end of the day." >General</label>
+                <input type="radio" name="priority" id="norm">
+                <label for="norm" title="Normal : Try to do today only.">Normal</label>
+                <button type="button" value="Add" id="add" onclick="add()">Add</button>
+            </div>
+        </section>
+        <section>
+            <h1>Your #TODAY's <br>plan list #TO DO.</h1>
+
+            <div class="toDoListBtns">
+                <button onclick="location.reload(true)" >Refresh</button>
+                <span>sort by</span>
+                <select name="sort" id="prioritySort" onchange="prioritySort(event)">
+                    <option value="Default">Default</option>
+                    <option value="Priorities" >Priorities</option>
+                </select>
+                <button onclick="delAll()">Delete All</button>
+                <div id="temp"></div>
+            </div>
+
+            <div id="toDo_list">
+                <div id="srno">
+                    <h3 id="tit" class="title">Work on Portfolio     project</h3>    
+                    <p id="des" class="description">You have to work on  the your portfolio project for adding it in  to your resume to make our profile strong.</p>
+                    
+                    <input type="checkbox" name="done" id="done" onclick="done(this.id)">
+                    <label for="done" onclick="done(this.id)">Mark as DONE</label>
+                    <button id="del">Delete</button>
+                </div>
+                <div id="t"></div>
+            </div>
+            <div id="t2"></div>
+            <div id="t3"></div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>

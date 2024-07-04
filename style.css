@@ -1,0 +1,9 @@
+.imp{
+    color:red;
+}
+.gen{
+    color: green;
+}
+.doneLabel:checked{
+    color: blue;
+}
