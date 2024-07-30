@@ -37,6 +37,7 @@ function toDoList(priority=undefined){
     }
 }
 
+let test = document.getElementsByClassName("test")[0];
 // function to add toDo
 function add(){
     // Get the input values of to-dos from the user and stored in the variables.
@@ -45,6 +46,7 @@ function add(){
     const desc = document.getElementById("desc").value;
     const type = priority();
 
+    // test.innerHTML = toDoId + toDo + desc ;
     // Save the inputs in local storage received from the user to access it even after refresh or end session or close tab.
     // By using local storage we can access the data until we delete by manually.
     // check for empty toDos and avoid them to save
@@ -75,63 +77,40 @@ function priority(){
 
 // function to create toDo
 function createToDo(toDoId,toDo,desc,type){
-    
+
     const toDoList = document.getElementById("toDo_list");
-    // create toDo element in toDo list (div element)
-    const toDoElement = document.createElement("div");
     const divId = "srNo_" + toDoId;
-    toDoElement.setAttribute("id",divId);
-    toDoElement.setAttribute("class","toDoElement");
-    toDoElement.setAttribute("class", type);
-    toDoList.appendChild(toDoElement);
-
-    // create serial no. element of toDo
-    const toDoElementSrNo = document.createElement("h3");
-    toDoElementSrNo.setAttribute("class","srNos");
-    const toDoElementSrNoText = document.createTextNode(srNoCount);
-    toDoElementSrNo.appendChild(toDoElementSrNoText);
-    toDoElement.appendChild(toDoElementSrNo);
-
-    // create title element of toDo
-    const toDoElementTitle = document.createElement("h3");
-    toDoElementTitle.setAttribute("class","title");
-    const toDoElementTitleText = document.createTextNode(toDo);
-    toDoElementTitle.appendChild(toDoElementTitleText);
-    toDoElement.appendChild(toDoElementTitle);
-    
-    // create description element of toDo
-    const toDoElementDescription = document.createElement("p");
-    toDoElementDescription.setAttribute("class","description");
-    const toDoElementDescriptionText = document.createTextNode(desc);
-    toDoElementDescription.appendChild(toDoElementDescriptionText);
-    toDoElement.appendChild(toDoElementDescription);
-    
-    // checkbox to mark down done or undone to do
-    const toDoElementDone = document.createElement("input");
     const doneID = "d_" + toDoId;
-    toDoElementDone.setAttribute("type","checkbox");
-    toDoElementDone.setAttribute("id", doneID);
-    toDoElementDone.setAttribute("class","done");
-    toDoElementDone.setAttribute("onclick","done(this.id)");
-    toDoElement.appendChild(toDoElementDone);
-    
-    // label for checkbox
-    const toDoElementDoneLabel = document.createElement("label");
-    toDoElementDoneLabel.setAttribute("for", doneID);
-    toDoElementDoneLabel.setAttribute("class","doneLabel");
-    const toDoElementDoneLabelText = document.createTextNode("Mark as Done");
-    toDoElementDoneLabel.appendChild(toDoElementDoneLabelText);
-    toDoElement.appendChild(toDoElementDoneLabel);
 
-    // del button to delete to do
-    const toDoElementDel = document.createElement("button");
-    toDoElementDel.setAttribute("id",toDoId);
-    toDoElementDel.setAttribute("class","del");
-    toDoElementDel.setAttribute("onclick","del(this.id)");
-    const toDoElementDelText = document.createTextNode("Delete");
-    toDoElementDel.appendChild(toDoElementDelText);
-    toDoElement.appendChild(toDoElementDel);
-    
+    let typeOfTodo;
+    if(type=="imp"){
+        typeOfTodo = "alert-danger";
+    }
+    else if(type=="gen"){
+        typeOfTodo = "alert-warning text-warning";
+    }
+    else{
+        typeOfTodo = "alert-primary";
+    }
+
+    let toDoHTML = `
+                <div id="${divId}" class="alert ${typeOfTodo} ${type} toDoElement card" role="alert">
+                  <div class="srNos card-header">${srNoCount}</div>
+                  <div class="card-body">
+                    <h3 class="title card-title">${toDo}</h3>
+                    <p class="description card-text">${desc}</p>
+                    <div class="form-check form-switch d-inline-block">
+                    <input type="checkbox" id="${doneID}" class="done form-check-input"
+                      onclick="done(this.id)">
+                    <label for="${doneID}" class="doneLabel form-check-label">Mark as DONE </label>
+                    </div>
+                    <button id="${toDoId}" class="del btn btn-danger" onclick="del(this.id)">Delete</button>
+                  </div>
+                </div>
+    `
+
+    toDoList.innerHTML += toDoHTML;
+ 
     srNoCount++;//increase SrNo counter
 }
 
@@ -152,20 +131,24 @@ function delAll (){
 function createDone(id,check){
     let checkId = document.getElementById(id);
     checkId.checked = check;
-    let elementId = checkId.parentElement.id;
-    let element = document.getElementById(elementId);
-    let title = desc = element.children;
-
+    id=id.split("_");
+    let markId="srNo_"+id[1];
+    let mark = document.getElementById(markId);
+    let markLable = mark.childNodes;
+    
     if (check){
-        title[1].style.opacity = "0.5";
-        desc[2].style.opacity = "0.5";
+        mark.style.background = "black";
+        mark.style.opacity = "0.7";
+        markLable[3].childNodes[5].childNodes[3].innerHTML = "Marked as DONE";
     }
     else{
-        title[1].style.opacity = "1";
-        desc[2].style.opacity = "1";
+        mark.style.background = "";
+        mark.style.opacity = "1";
+        markLable[3].childNodes[5].childNodes[3].innerHTML = "Mark as DONE";
     }
 }
 
+var t2 = document.getElementById("t2");
 // function to trigger mark done or undone and add to local storage
 function done(id){
     let check = document.getElementById(id).checked;
