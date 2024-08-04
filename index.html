@@ -1,137 +1,327 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>to-do app</title>
+    <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Merienda:wght@300..900&display=swap');
+
+        * {
+            scrollbar-width: none;
+        }
+    </style>
 </head>
-<body onload="toDoList()" class="bg-black text-white-50" data-bs-theme="dark">
-    <header>
-          <nav class="navbar navbar-expand-lg bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="#">
-                    <img src="todoLogo.jfif" alt="Logo" width="60" height="100%" class="img-thumbnail">
-                    To Do App
-                  </a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-              <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Profile</a>
-                  </li>
-                </ul>
-                <form class="d-flex" role="search">
-                  <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                  <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-              </div>
-            </div>
-          </nav>
-    </header>
-    <main class="container text-center">
 
-        <section>
-            <div class="toDo_input">
-                <div class="card todoListTitle my-3 col-8 col-lg-6 m-auto bg-black bg-gradient" data-bs-theme="dark">
-                    <div class="card-header">
-                      Hello there !
-                    </div>
-                    <div class="card-body">
-                      <h5 class="card-title">Lets plan <strong>#TODAY</strong></h5>
-                      <p class="card-text">Create your TO-DO list.</p>
-                    </div>
-                  </div>
-                
-                <div class=" container">
-                <h2> </h2>
-                <h1></h1>
-                </div>
-                <div data-bs-theme="dark"   class="col-12 col-md-9 col-xl-7 m-auto">
-                    <div class="form-floating">
-                        <textarea class="form-control pt-5 h-25" placeholder="Leave a comment here" id="toDo"></textarea>
-                        <label class="w-100" for="floatingTextarea" ><b>Add TO-DO Title here.</b><br><i>eg. Work on 'portfolio' project, Go to gym, Start to learn react, etc.</i></label>
-                    </div>
-                    <br>
-                    <div class="form-floating">
-                        <textarea class="form-control pb-5 h-100" placeholder="Leave a comment here" id="desc"></textarea>
-                        <label class="w-100" for="floatingTextarea">Add DESCRIPTION for the TO-DO.<br></label>
-                    </div>
-                </div>
-                <br>
-
-                <div id="toDoWarn"></div>
-
-                <div class="col-12 clearfix col-md-9 col-xl-7 m-auto">
-                    <div class="btn-group float-sm-start col-12 col-sm-8 col-lg-6 my-1 m-auto" role="group" aria-label="Basic radio toggle button group">
-                    <input type="radio" class="btn-check" name="priority" id="imp" autocomplete="off" >
-                    <label class="btn btn-outline-danger col-4"  title="Important : Must to do with Higher Priority." for="imp">Important</label>
-                  
-                    <input type="radio" class="btn-check" name="priority" id="gen" autocomplete="off" checked>
-                    <label class="btn btn-outline-warning col-4" title="General : You should do till end of the day." for="gen">General</label>
-                  
-                    <input type="radio" class="btn-check" name="priority" id="norm" autocomplete="off">
-                    <label class="btn btn-outline-primary col-4" title="Normal : Try to do today only." for="norm">Normal</label>
-                  </div>
-
-                    <button type="button" class="btn btn-success col-sm-3 col-5 my-1 m-auto float-none float-sm-end" value="Add" id="add" onclick="add()">Add</button>
-                </div>
-
-                </form>
-
-            </div>
-            <div class="test"></div>
-        </section>
-        <hr>
-        <section>
-            <h1 class="fs-3">Your #TODAY's #TO DO list.</h1><hr>
-
-            <div class="toDoListBtns my-2 mx-auto">
-                <span>sort by</span>
-                <select data-bs-theme="dark" class="form-select form-select-sm d-inline-block w-auto" name="sort" id="prioritySort" onchange="prioritySort(event)">
-                    <option value="Default">Default</option>
-                    <option value="Priorities" >Priorities</option>
-                </select>
-            </div>
-            <div id="t2"></div>
-            <div class="clearfix col-12 col-md-9 col-xl-8 m-auto">
-                <button type="button" class="btn btn-primary float-sm-start my-2">
-                    Tasks to Do <span id="t" class="badge text-bg-secondary"></span>
-                </button>
-                <div class="float-sm-end">
-                <button onclick="location.reload(true)" class="float-start btn btn-outline-primary my-2 me-3">Refresh</button>
-                <button class="btn btn-danger float-end my-2" onclick="delAll()">Delete All</button>
-                </div>
+<body>
+    <div class="p-2">
+        <!-- Top Bar Start Here -->
+        <div class="card border-0 rounded-bottom-5 fixed-top p-1 pb-0 bg-body" type="button" data-bs-toggle="collapse"
+            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <div class="card-header p-0 mb-1 text-center rounded-bottom-5">
+                <h5>
+                    Y<span style="font-size: medium;">⨀</span>ur <span style="font-size: larger;">⊚</span>rbit
+                </h5>
             </div>
 
-
-            <div id="toDo_list" class="col-12 col-md-9 col-xl-8 m-auto" data-bs-theme="dark">
-                <div id="srno" class="card alert alert-primary">
-                  <div class="card-header">1</div>
-                  <div class="card-body">
-                    <h3 id="tit" class="title card-title">Work on Portfolio project</h3>    
-                    <p id="des" class="description card-text">You have to work on  the your portfolio project for adding it in  to your resume to make our profile strong.</p>
-
-                    <div class="form-check form-switch d-inline-block">
-                    <input type="checkbox" class="form-check-input" name="done" id="done" onclick="done(this.id)">
-                    <label for="done" class="form-check-label" onclick="done(this.id)">Mark as DONE</label>
+            <div class="accordion" id="accordionCalender">
+                <div class="accordion-item border-0 ">
+                    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionCalender">
+                        <div class="accordion-body">
+                            <strong>This is the first item's accordion body.</strong> It is shown by default, until the
+                            collapse
+                            plugin adds the appropriate classes that we use to style each element. These classes control
+                            the overall
+                            appearance, as well as the showing and hiding via CSS transitions. You can modify any of
+                            this with
+                            custom CSS or overriding our default variables. It's also worth noting that just about any
+                            HTML can go
+                            within the <code>.accordion-body</code>, though the transition does limit overflow.
+                        </div>
                     </div>
-
-                    <button id="del" class="btn btn-danger">Delete</button>
-                  </div>
                 </div>
             </div>
-            
-            <div id="t3"></div>
-        </section>
-    </main>
+        </div>
+        <!-- Top Bar End Here -->
+
+        <div class="my-4 py-4 ">
+
+            <!-- Progress Bar Start Here -->
+            <div class="row mx-2 mb-2 bg-body-secondary d-flex align-items-center rounded-end-5 rounded-2">
+                <div class="col ps-3" style="font-family: Merienda,cursive;">
+                    <h1 style="font-size: large; font-weight: 900;">TASK ORBIT</h1>
+                    <h3 style="font-size: small; font-weight: 700; margin-top: -9px;">Orbiting towards SUCCESS</h3>
+                    <div class="progress bg-primary-subtle" role="progressbar" aria-label="Example with label"
+                        aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
+                        style="height: 12px; margin-top: -5px;">
+                        <div class="progress-bar" style="width: 55%; font-size:9px">Keep it up orbiting</div>
+                    </div>
+                </div>
+                <div class="p-2" style="height: 4rem;width: 4rem;">
+                    <div class="col bg-dark h-100 rounded-circle p-1">
+                        <div class="col bg-black h-100 rounded-circle d-flex justify-content-center align-items-center text-white fs-5"
+                            style="font-family: Merienda,cursive;">1/3</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Progress Bar End Here -->
+
+            <!-- Main Content Todos -->
+            <div class="p-2">
+                <div id="toDo_list" class="card-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Bar Start Here -->
+    <div class="row text-center d-flex px-3 fs-1 fixed-bottom bg-body">
+        <div class="col text-info" style="cursor: pointer;">
+            <i class="bi bi-bullseye"></i>
+            <h6 style="font-size: small;">orbit</h6>
+        </div>
+        <div class="col" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#addToDoModal"
+            data-bs-whatever="@mdo">
+            <i style="font-size: xx-large;" class="bi bi-plus-square"></i>
+        </div>
+        <div class="col" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#coreModal">
+            <i class="bi bi-life-preserver"></i>
+            <h6 style="font-size: small;">core</h6>
+        </div>
+    </div>
+
+    <!-- Core Element Start here-->
+    <div class="modal fade" id="coreModal" tabindex="-1" aria-labelledby="coreModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="coreModalLabel">Login / Sign Up</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex justify-content-around">
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#SignUpModal" data-bs-whatever="@mdo">Sign Up</button>
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#LoginModal" data-bs-whatever="@mdo">Login</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Core Element End here-->
+    <!-- Bottom Bar End Here -->
+
+    <!-- All modals Start Here -->
+    <div>
+        <div>
+            <!-- Sign Up Element Start here -->
+            <div class="modal fade" id="SignUpModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">SignUp</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="signUpForm">
+                                <div class="mb-3">
+                                    <label for="name" class="col-form-label">Name:</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="username" class="col-form-label">Username:</label>
+                                    <input type="text" class="form-control" id="username" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="col-form-label">Password:</label>
+                                    <input type="text" class="form-control" id="password" required>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="close"
+                                data-bs-dismiss="modal">Close</button>
+                            <button form="signUpForm" type="submit" class="btn btn-primary">SignUp</button>
+                        </div>
+                    </div>
+                    <div id="signUpAlert" class="px-3 pt-2"></div>
+                </div>
+            </div>
+            <!-- Sign Up Element End here -->
+
+            <!-- Login Element Start here -->
+            <div class="modal fade" id="LoginModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Login</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="loginForm">
+                                <div class="mb-3">
+                                    <label for="username" class="col-form-label">Username:</label>
+                                    <input type="text" class="form-control" id="loginUsername" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="col-form-label">Password:</label>
+                                    <input type="text" class="form-control" id="loginPassword" required>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="closeLoginForm" type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Close</button>
+                            <button form="loginForm" type="submit" class="btn btn-primary">Login</button>
+                        </div>
+                    </div>
+                    <div id="loginAlert" class="px-3 pt-2"></div>
+                </div>
+            </div>
+            <!-- Login Element End here -->
+
+            <!-- Add To Do Element Start here -->
+            <div class="modal fade" id="addToDoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5">To do</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="toDoForm">
+                                <div class="mb-3">
+                                    <label for="title" class="col-form-label">title:</label>
+                                    <input type="text" class="form-control" id="title" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="desc" class="col-form-label">description:</label>
+                                    <input type="text" class="form-control" id="desc" required>
+                                </div>
+                                <div class="col-12 clearfix col-md-9 m-auto">
+                                    <div class="btn-group float-sm-start col-12 my-1 m-auto" role="group"
+                                        aria-label="Basic radio toggle button group">
+                                        <input type="radio" class="btn-check" name="priority" id="prime"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-danger col-4"
+                                            title="Prime : Must to do with Higher Priority." for="prime">Prime</label>
+
+                                        <input type="radio" class="btn-check" name="priority" id="power"
+                                            autocomplete="off" checked>
+                                        <label class="btn btn-outline-primary col-4"
+                                            title="Power : You should do till end of the day." for="power">Power</label>
+
+                                        <input type="radio" class="btn-check" name="priority" id="lite"
+                                            autocomplete="off">
+                                        <label class="btn btn-outline-warning col-4"
+                                            title="Lite : Try to do today only." for="lite">Lite</label>
+                                    </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="closeForm"
+                                data-bs-dismiss="modal">Close</button>
+                            <button form="toDoForm" type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Add To Do Element End here -->
+        </div>
+        <!-- To Do Edit Element Start here-->
+        <div class="modal fade" id="editToDoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">To do Edit</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="toDoEditForm">
+                            <div class="mb-3">
+                                <label for="Edititle" class="col-form-label">title:</label>
+                                <input type="text" class="form-control" id="editTitle" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="desc" class="col-form-label">description:</label>
+                                <input type="text" class="form-control" id="editDesc" required>
+                            </div>
+                            <div class="col-12 clearfix col-md-9 col-xl-7 m-auto">
+                                <div class="btn-group float-sm-start col-12 col-sm-8 col-lg-6 my-1 m-auto" role="group"
+                                    aria-label="Basic radio toggle button group">
+                                    <input type="radio" class="btn-check" name="priority" id="edit_prime"
+                                        autocomplete="off">
+                                    <label class="btn btn-outline-danger col-4"
+                                        title="Prime : Must to do with Higher Priority." for="edit_prime">Prime</label>
+
+                                    <input type="radio" class="btn-check" name="priority" id="edit_power"
+                                        autocomplete="off">
+                                    <label class="btn btn-outline-primary col-4"
+                                        title="Power : You should do till end of the day."
+                                        for="edit_power">Power</label>
+
+                                    <input type="radio" class="btn-check" name="priority" id="edit_lite"
+                                        autocomplete="off">
+                                    <label class="btn btn-outline-warning col-4" title="Lite : Try to do today only."
+                                        for="edit_lite">Lite</label>
+                                </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="closeEditForm"
+                            data-bs-dismiss="modal">Close</button>
+                        <button form="toDoEditForm" type="submit" class="btn btn-primary">Edit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- To Do Edit Element End here-->
+
+        <!-- Core Element Start here-->
+        <div class="modal fade" id="coreModal" tabindex="-1" aria-labelledby="coreModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="coreModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-around">
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#SignUpModal" data-bs-whatever="@mdo">Sign Up</button>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#LoginModal" data-bs-whatever="@mdo">Login</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Core Element End here-->
+
+    </div>
+    <!-- All modals End Here -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
+
 </html>
