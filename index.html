@@ -19,27 +19,23 @@
 <body>
     <div class="p-2">
         <!-- Top Bar Start Here -->
-        <div class="card border-0 rounded-bottom-5 fixed-top p-1 pb-0 bg-body" type="button" data-bs-toggle="collapse"
+        <div class="card border-0 rounded-bottom-5 fixed-top p-1 pb-0 bg-body" >
+            <div class="card-header p-0 mb-1 text-center rounded-bottom-5" type="button" data-bs-toggle="collapse"
             data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-            <div class="card-header p-0 mb-1 text-center rounded-bottom-5">
                 <h5>
-                    Y<span style="font-size: medium;">⨀</span>ur <span style="font-size: larger;">⊚</span>rbit
+                    Your <span style="font-size: larger;">⊚</span>rbit
                 </h5>
             </div>
 
             <div class="accordion" id="accordionCalender">
                 <div class="accordion-item border-0 ">
-                    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionCalender">
+                    <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionCalender" aria-controls="panelsStayOpen-collapseOne">
                         <div class="accordion-body">
-                            <strong>This is the first item's accordion body.</strong> It is shown by default, until the
-                            collapse
-                            plugin adds the appropriate classes that we use to style each element. These classes control
-                            the overall
-                            appearance, as well as the showing and hiding via CSS transitions. You can modify any of
-                            this with
-                            custom CSS or overriding our default variables. It's also worth noting that just about any
-                            HTML can go
-                            within the <code>.accordion-body</code>, though the transition does limit overflow.
+                            <div class="d-flex justify-content-between align-items-center fs-5">
+                                <button class="btn btn-outline-secondary p-1"><i class="bi bi-arrow-bar-left" id="prevDay"></i></button>
+                                <div id="calender"></div>
+                                <button class="btn btn-outline-secondary p-1" id="nextDay"><i class="bi bi-arrow-bar-right"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -51,19 +47,19 @@
 
             <!-- Progress Bar Start Here -->
             <div class="row mx-2 mb-2 bg-body-secondary d-flex align-items-center rounded-end-5 rounded-2">
-                <div class="col ps-3" style="font-family: Merienda,cursive;">
+                <div class="col ps-3" style="font-family: Merienda,sans-serif;">
                     <h1 style="font-size: large; font-weight: 900;">TASK ORBIT</h1>
                     <h3 style="font-size: small; font-weight: 700; margin-top: -9px;">Orbiting towards SUCCESS</h3>
                     <div class="progress bg-primary-subtle" role="progressbar" aria-label="Example with label"
                         aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"
                         style="height: 12px; margin-top: -5px;">
-                        <div class="progress-bar" style="width: 55%; font-size:9px">Keep it up orbiting</div>
+                        <div class="progress-bar" id="progressBar" style="font-size:9px">Keep orbiting</div>
                     </div>
                 </div>
                 <div class="p-2" style="height: 4rem;width: 4rem;">
                     <div class="col bg-dark h-100 rounded-circle p-1">
-                        <div class="col bg-black h-100 rounded-circle d-flex justify-content-center align-items-center text-white fs-5"
-                            style="font-family: Merienda,cursive;">1/3</div>
+                        <div id="progress" class="col bg-black h-100 rounded-circle d-flex justify-content-center align-items-center text-white fs-5"
+                            style="font-family: Merienda,cursive;">0</div>
                     </div>
                 </div>
             </div>
@@ -192,12 +188,12 @@
             <!-- Login Element End here -->
 
             <!-- Add To Do Element Start here -->
-            <div class="modal fade" id="addToDoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal fade p-1" id="addToDoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5">To do</h1>
+                            <h1 class="modal-title fs-5">Mission</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -210,6 +206,7 @@
                                     <label for="desc" class="col-form-label">description:</label>
                                     <input type="text" class="form-control" id="desc" required>
                                 </div>
+                                <div class="">level:</div>
                                 <div class="col-12 clearfix col-md-9 m-auto">
                                     <div class="btn-group float-sm-start col-12 my-1 m-auto" role="group"
                                         aria-label="Basic radio toggle button group">
@@ -233,7 +230,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" id="closeForm"
                                 data-bs-dismiss="modal">Close</button>
-                            <button form="toDoForm" type="submit" class="btn btn-primary">Add</button>
+                            <button form="toDoForm" type="submit" class="btn bg-primary">Add</button>
                         </div>
                     </div>
                 </div>
@@ -242,10 +239,10 @@
         </div>
         <!-- To Do Edit Element Start here-->
         <div class="modal fade" id="editToDoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5">To do Edit</h1>
+                        <h1 class="modal-title fs-5">Revise mission</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -258,6 +255,7 @@
                                 <label for="desc" class="col-form-label">description:</label>
                                 <input type="text" class="form-control" id="editDesc" required>
                             </div>
+                            <div>level:</div>
                             <div class="col-12 clearfix col-md-9 col-xl-7 m-auto">
                                 <div class="btn-group float-sm-start col-12 col-sm-8 col-lg-6 my-1 m-auto" role="group"
                                     aria-label="Basic radio toggle button group">

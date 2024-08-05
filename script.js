@@ -10,6 +10,7 @@ const closeForm = document.getElementById("closeForm");
 const closeLoginForm = document.getElementById("closeLoginForm");
 const toDoListDiv = document.getElementById("toDo_list");
 let toDoSrNoCounter = 1 ;
+let missionsCompleted = 0;
 
 createDataBase();
 
@@ -41,6 +42,7 @@ signUpForm.addEventListener("submit", (e) => {
 
     }
 })
+
 loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
     const username = document.getElementById("loginUsername").value;
@@ -62,6 +64,7 @@ loginForm.addEventListener("submit", (e) => {
         if(password === userPassword){
             toDoDataBase.currentUser = 
             toDoDataBase.users[username];
+            localStorage.setItem("toDoDataBase",JSON.stringify(toDoDataBase))
             document.getElementById("loginAlert").innerHTML = `
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                 Successfully Loged In
@@ -71,6 +74,7 @@ loginForm.addEventListener("submit", (e) => {
             setTimeout(() => {
                 loginForm.reset();
                 closeLoginForm.click();
+                location.reload(true);
             }, 1000);
 
         }
@@ -92,8 +96,6 @@ loginForm.addEventListener("submit", (e) => {
         `
         
     }
-    // testDB.innerHTML += username + " " + password + " " + users.includes(username);
-
 })
 
 
@@ -205,8 +207,7 @@ function editPriority(){
 }
 
 
-function createToDo(id,title,desc,type,isDone,time){
-
+function createToDo(id,title,desc,type,isDone,time,srNo){
     let typeOfTodo;
     if(type=="prime"){
         typeOfTodo = "alert-danger";
@@ -229,7 +230,7 @@ function createToDo(id,title,desc,type,isDone,time){
                   <div class="srNos p-1 px-2 card-header d-flex justify-content-between bg-transpa rent">
                 
                   <div class="d-inline-block pt-1 px-1">
-                    ${toDoSrNoCounter} 
+                    ${srNo} 
                     <span class=" opacity-25" >↓</span> ${time} 
                     </div>
                     <div class="d-inline-block">
@@ -249,7 +250,6 @@ function createToDo(id,title,desc,type,isDone,time){
 
     toDoListDiv.innerHTML += toDoHTML;
     createDone(id,isDone);
-    toDoSrNoCounter++;//increase SrNo counter
 }
 
 function done(id){
@@ -263,14 +263,16 @@ function done(id){
         .usersToDoData[currentUserData]
         [today[0]][id][4] = check;
         localStorage.setItem("toDoDataBase", JSON.stringify(toDoDataBase));
+        missionsCompleted++;
     }
     else{
         toDoDataBase
         .usersToDoData[currentUserData]
         [today[0]][id][4] = check;
         localStorage.setItem("toDoDataBase", JSON.stringify(toDoDataBase));
+        missionsCompleted--;
     }
-
+    progressTrack();
     createDone(id,check);       
 }
 
@@ -350,26 +352,98 @@ function editToDoToDataBase(toDoId,title,desc,type){
 
 }
 
-try {
+function progressTrack(){
     const currentUserData = 
     toDoDataBase.currentUser[1] + "|s_toDoData";
     const todaysToDoData = toDoDataBase
     .usersToDoData[currentUserData]
     [today[0]];
-            
-    for (let todoId in todaysToDoData ){
-        const todo = todaysToDoData[todoId];
+    const totalMissions = Object.keys(todaysToDoData).length ;
+    const progress = document.getElementById("progress");
+    const progressBar = document.getElementById("progressBar");
+    progress.innerHTML = `${missionsCompleted}/${totalMissions}`
+    progressBar.style.width = `${(missionsCompleted/totalMissions)*100}%`
+
+    switch((missionsCompleted/totalMissions)*100){
+    case(100):
+        progressBar.innerHTML = "Orbit Completed" ;
+        break;  
+    default:
+        progressBar.innerHTML = "Keep Orbiting"
+    }
+}
+
+function calender(){
+
+    const currentUserData = 
+    toDoDataBase.currentUser[1] + "|s_toDoData";
+    const orbitsData = toDoDataBase
+    .usersToDoData[currentUserData];
+    const orbits = Object.keys(toDoDataBase
+    .usersToDoData[currentUserData]);
+
+    const calender = document.getElementById("calender");
+    const prevDay = document.getElementById("prevDay");
+    const nextDay = document.getElementById("nextDay");
+    let dateToggle = 0;
+    let orbitToggle = 1;
+    const date = new Date().getTime();
+    const today = new Date((date)-((1000*60*60*24)*dateToggle)).toDateString();
+    calender.innerHTML = today;
+
+    // console.log(orbitsData[orbits[orbits.length-1]]);
+    console.log(toDoDataBase
+        .usersToDoData[currentUserData][orbits[orbits.length-1]]);
+    
+    prevDay.addEventListener("click",() => {
+        toDoListDiv.innerHTML = " ";
+        dateToggle++;
+        orbitToggle++;
+        const today = new Date((date)-((1000*60*60*24)*dateToggle)).toDateString();
+        calender.innerHTML = today;
+        renderMissions(toDoDataBase
+            .usersToDoData[currentUserData][orbits[orbits.length-orbitToggle]]);
+
+
+    });
+    nextDay.addEventListener("click",() => {
+        toDoListDiv.innerHTML = "";
+        dateToggle--;
+        orbitToggle--;
+        const today = new Date((date)-((1000*60*60*24)*dateToggle)).toDateString();
+        calender.innerHTML = today;
+        renderMissions(toDoDataBase
+            .usersToDoData[currentUserData][orbits[orbits.length-orbitToggle]]);
+    });
+}
+calender();
+
+function renderMissions(todaysOrbit){
+    let srNo = 1;
+    for (let todoId in todaysOrbit ){
+        const todo = todaysOrbit[todoId];
         let id = todo[0];
         let title = todo[1];
         let desc = todo[2];
         let type = todo[3];
         let isDone = todo[4];
         let time = todo[5];
+
+        if (isDone){missionsCompleted++};
+        progressTrack();
         
-        createToDo(id,title,desc,type,isDone,time);
-
-
+        createToDo(id,title,desc,type,isDone,time,srNo);
+        srNo++;
     }
+}
+try {
+    const currentUserData = 
+    toDoDataBase.currentUser[1] + "|s_toDoData";
+    const todaysToDoData = toDoDataBase
+    .usersToDoData[currentUserData]
+    [today[0]];
+
+    renderMissions(todaysToDoData);
 } catch (error) {
     
 }
@@ -386,4 +460,4 @@ function themeMode(){
 
 console.log("all good");
 
-testDB.innerHTML= `<div style="width:80px; text-align:center; line-height:17px; text-transform:uppercase;">${new Date().toDateString()}</div>`
+// testDB.innerHTML= `<div style="width:80px; text-align:center; line-height:17px; text-transform:uppercase;">${new Date().toDateString()}</div>`
