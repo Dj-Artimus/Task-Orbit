@@ -1,14 +1,18 @@
 
 themeMode()
 
+const getIn = document.getElementById("getIn");
+const mainApp = document.getElementById("mainApp");
 const testDB = document.getElementsByClassName("testDB")[0];
 const signUpForm = document.getElementById("signUpForm");
 const loginForm = document.getElementById("loginForm");
+const logout = document.getElementById("logout");
 const toDoForm = document.getElementById("toDoForm");
 const toDoEditForm = document.getElementById("toDoEditForm");
 const closeForm = document.getElementById("closeForm");
 const closeLoginForm = document.getElementById("closeLoginForm");
 const toDoListDiv = document.getElementById("toDo_list");
+const core = document.getElementById("core");
 let toDoSrNoCounter = 1 ;
 let missionsCompleted = 0;
 
@@ -17,8 +21,18 @@ createDataBase();
 const toDoDataBase = JSON.parse(localStorage.getItem("toDoDataBase"));
 const today = new Date().toLocaleString().split(",");
 
+if(!toDoDataBase.currentUser[1]){
+    mainApp.style.display="none";
+}
+else{
+    getIn.style.display="none"
+    mainApp.style.display="block";
+}
+
 
 signUpForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+
     const username = document.getElementById("username").value;
     const users = Object.keys(toDoDataBase.users);
     if(users.includes(username)){
@@ -27,9 +41,8 @@ signUpForm.addEventListener("submit", (e) => {
                 Username is already taken. <br> Please select different username
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-        `
-        e.preventDefault();
-        
+        `        
+
     }
     else{
         createUser();
@@ -39,12 +52,17 @@ signUpForm.addEventListener("submit", (e) => {
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
         `
+        setTimeout(() => {
+            location.reload(true);
+        }, 1500);
 
     }
 })
 
+
 loginForm.addEventListener("submit", (e) => {
     e.preventDefault();
+    console.log("login")
     const username = document.getElementById("loginUsername").value;
     const password = document.getElementById("loginPassword").value;
 
@@ -56,7 +74,9 @@ loginForm.addEventListener("submit", (e) => {
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
         `
-
+        setTimeout(() => {
+            location.reload(true);
+        }, 1200);
     }
     else if(users.includes(username)){
         e.preventDefault();
@@ -72,10 +92,8 @@ loginForm.addEventListener("submit", (e) => {
                 </div>
                 `
             setTimeout(() => {
-                loginForm.reset();
-                closeLoginForm.click();
                 location.reload(true);
-            }, 1000);
+            }, 1200);
 
         }
         else{
@@ -90,7 +108,8 @@ loginForm.addEventListener("submit", (e) => {
     else{
         document.getElementById("loginAlert").innerHTML = `
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                Username not found ! Kindly Sign Up
+                Username not found ! Kindly <span data-bs-target="#carouselExampleControlsNoTouching2"
+                                        data-bs-slide="next" style="cursor:pointer;font-weight:700;"> Sign Up </span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
         `
@@ -98,6 +117,11 @@ loginForm.addEventListener("submit", (e) => {
     }
 })
 
+logout.addEventListener("click",() => {
+    toDoDataBase.currentUser=[];
+    localStorage.setItem("toDoDataBase",JSON.stringify(toDoDataBase));
+    setTimeout(location.reload(true),1500);
+})
 
 toDoForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -121,6 +145,14 @@ toDoEditForm.addEventListener("submit", () => {
 
     editToDoToDataBase(toDoId,title,desc,type);
     console.log(toDoId,title,desc,type)
+})
+
+core.addEventListener("click", () => {
+    const profileName = document.getElementById("profileName")
+    const profileUsername = document.getElementById("profileUsername")
+    
+    profileName.value = toDoDataBase.currentUser[0];
+    profileUsername.value = toDoDataBase.currentUser[1];
 })
 
 
@@ -377,8 +409,6 @@ function calender(){
 
     const currentUserData = 
     toDoDataBase.currentUser[1] + "|s_toDoData";
-    const orbitsData = toDoDataBase
-    .usersToDoData[currentUserData];
     const orbits = Object.keys(toDoDataBase
     .usersToDoData[currentUserData]);
 
@@ -416,7 +446,6 @@ function calender(){
             .usersToDoData[currentUserData][orbits[orbits.length-orbitToggle]]);
     });
 }
-calender();
 
 function renderMissions(todaysOrbit){
     let srNo = 1;
@@ -444,6 +473,7 @@ try {
     [today[0]];
 
     renderMissions(todaysToDoData);
+    calender();
 } catch (error) {
     
 }
@@ -461,3 +491,4 @@ function themeMode(){
 console.log("all good");
 
 // testDB.innerHTML= `<div style="width:80px; text-align:center; line-height:17px; text-transform:uppercase;">${new Date().toDateString()}</div>`
+
