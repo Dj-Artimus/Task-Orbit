@@ -17,13 +17,25 @@
         * {
             scrollbar-width: none;
         }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
     </style>
 </head>
 
-<body>
+<body data-bs-theme="light" style="display: none;">
 
     <!-- Welcome and login , register page start here -->
-    <div id="getIn">
+    <div id="getIn" style="display:none;">
         <div id="carouselExampleControlsNoTouching" class="carousel slide overflow-hidden" data-bs-touch="false">
             <div class="carousel-inner d-non e z-3 position-absolute">
                 <div class="carousel-item active">
@@ -199,31 +211,29 @@
     <!-- Welcome and login , register page end here -->
 
     <!-- Main App Start Here -->
-    <div class="container d-flex justify-content-center">
+    <div class="container d-flex justify-content-center" style="display:none;">
         <div id="mainApp" class="col col-lg-8">
             <!-- Top Bar Start Here -->
-            <div class="">
-                <div class="card border-0 rounded-bottom-5 fixed-top p-1 pb-0 bg-body">
-                    <div id="orbit" class="card-header p-0 mb-1 text-center rounded-bottom-5" type="button"
-                        data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
-                        aria-controls="collapseOne">
-                        <h5>
-                            Your <span style="font-size: larger;">⊚</span>rbit
-                        </h5>
-                    </div>
+            <div class="card border-0 rounded-bottom-5 fixed-top p-1 pb-0 bg-body">
+                <div id="orbit" class="card-header p-0 mb-1 text-center rounded-bottom-5" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true"
+                    aria-controls="collapseOne">
+                    <h5>
+                        Your <span style="font-size: larger;">⊚</span>rbit
+                    </h5>
+                </div>
 
-                    <div class="accordion" id="accordionCalender">
-                        <div class="accordion-item border-0 ">
-                            <div id="collapseOne" class="accordion-collapse collapse"
-                                data-bs-parent="#accordionCalender" aria-controls="panelsStayOpen-collapseOne">
-                                <div class="accordion-body">
-                                    <div class="d-flex justify-content-between align-items-center fs-5">
-                                        <button class="btn btn-outline-secondary p-1"><i class="bi bi-arrow-bar-left"
-                                                id="prevDay"></i></button>
-                                        <div id="calender"></div>
-                                        <button class="btn btn-outline-secondary p-1" id="nextDay"><i
-                                                class="bi bi-arrow-bar-right"></i></button>
-                                    </div>
+                <div class="accordion" id="accordionCalender">
+                    <div class="accordion-item border-0 ">
+                        <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionCalender"
+                            aria-controls="panelsStayOpen-collapseOne">
+                            <div class="accordion-body">
+                                <div class="d-flex justify-content-between align-items-center fs-5">
+                                    <button class="btn btn-outline-secondary p-1"><i class="bi bi-arrow-bar-left"
+                                            id="prevDay"></i></button>
+                                    <div id="calender"></div>
+                                    <button class="btn btn-outline-secondary p-1" id="nextDay"><i
+                                            class="bi bi-arrow-bar-right"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -235,7 +245,8 @@
             <!-- Main Content Todos -->
             <div class="p-1 my-1 mb-lg-5 py-5 px-md-5 mx-md-5">
                 <!-- Progress Bar Start Here -->
-                <div class="row mx-1 mb-2 bg-body-secondary d-flex align-items-center rounded-end-5 rounded-2">
+                <div class="row mx-1 mb-2 bg-body-secondary d-flex align-items-center rounded-end-5 rounded-2"
+                    id="progressElement">
                     <div class="col ps-3" style="font-family: Merienda,sans-serif;">
                         <h1 style="font-size: large; font-weight: 900;">TASK ORBIT</h1>
                         <h3 style="font-size: small; font-weight: 700; margin-top: -9px;">Orbiting towards SUCCESS</h3>
@@ -256,26 +267,35 @@
                 </div>
                 <!-- Progress Bar End Here -->
 
-                <div id="toDo_list" class="card-body">
+                <div id="toDo_list" class="card-body pb-3">
+                    <div id="emptyOrbit" class="d-flex justify-content-center pt-5 mt-5">
+                        <img src="emptyOrbit.gif" class="pt-5" style="transform: scale(2);" alt="">
+                    </div>
                 </div>
             </div>
 
             <!-- Bottom Bar Start Here -->
-            <div class="row text-center fixed-bottom start-0 d-flex px-3 fs-1  bg-body">
-                <div class="col text-info" style="cursor: pointer;">
-                    <i class="bi bi-bullseye"></i>
-                    <h6 style="font-size: small;margin-top:-3px;">orbit</h6>
-                </div>
-                <div class="col" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#addToDoModal"
-                    data-bs-whatever="@mdo">
-                    <i style="font-size: xx-large;" class="bi bi-plus-square"></i>
-                </div>
-                <div class="col" id="core" style="cursor: pointer;" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
-                    <i class="bi bi-life-preserver"></i>
-                    <h6 style="font-size: small; margin-top:-3px;">core</h6>
+
+            <div class="col-12 col-md-8 col-lg-6 position-fixed start-50 bottom-0 translate-middle-x">
+                <div class="text-center d-flex px-3 bg-body">
+                    <div class="col text-info" style="cursor: pointer;">
+                        <i class="bi bi-bullseye fs-2"></i>
+                        <h6 style="font-size: small;margin-top:-3px;">orbit</h6>
+                    </div>
+                    <div class="col" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#addToDoModal"
+                        data-bs-whatever="@mdo" id="toDoBtn">
+                        <i style="font-size: xx-large;" class="bi bi-plus-square"></i>
+                    </div>
+                    <div class="col" id="core" style="cursor: pointer;" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                        <i class="bi bi-life-preserver fs-2"></i>
+                        <h6 style="font-size: small; margin-top:-3px;">core</h6>
+                    </div>
                 </div>
             </div>
+
+            <!-- Bottom Bar End Here -->
+
 
             <!-- Core Element Start here-->
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
@@ -284,29 +304,48 @@
                     <h5 class="offcanvas-title" id="offcanvasRightLabel">CORE</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                <div class="offcanvas-body d-flex flex-column">
+                <div class="offcanvas-body d-flex gap-3 flex-column">
                     <div class="card">
+                        <div class="card-header border-0">Profile</div>
                         <div class="card-body">
-
-                            <legend>Profile</legend>
-                            <label for="profileName">Name:</label>
-                            <input type="text" name="" class="bg-transparent border-0" id="profileName" value="name">
+                            Name : <span id="profileName"></span>
                             <br>
-                            <label for="profileUsername">Username:</label>
-                            <input type="text" name="" class="bg-transparent border-0" id="profileUsername"
-                                value="username">
-
+                            Username : <span id="profileUsername"></span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header border-0">Theme</div>
+                        <div class="card-body">
+                            <div class="d-flex gap-3">
+                                <label class="form-check-label" for="systemsDefault">Follow System</label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="systemsDefault">
+                                </div>
+                            </div>
+                            <div class="d-flex gap-4">
+                                <label class="form-check-label" for="darkMode">Dark Mode</label>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="darkMode">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <button class="btn btn-danger mt-5" id="logout">Logout</button>
+                    <div class="text-center pt-5">
+                        <h3 class="fs-5">Thank you ❤ for using <br><span style="font-family: Merienda,sans-serif;">Task
+                                Orbit</span></h3>
+                        <h5 style="font-size: small;">Developed by DjArtimus</h5>
+                        <h5 style="font-size: small;">&copy 2024 DjArtimus</h5>
+                    </div>
                 </div>
             </div>
             <!-- Core Element End here-->
-            <!-- Bottom Bar End Here -->
 
-            <!-- All modals Start Here -->
+        </div>
+        <!-- All modals Start Here -->
+        <div>
+            <!-- Add To Do Element Start here -->
             <div>
-                <!-- Add To Do Element Start here -->
                 <div class="modal fade p-1" id="addToDoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
@@ -320,7 +359,8 @@
                                 <form id="toDoForm">
                                     <div class="mb-3">
                                         <label for="title" class="col-form-label">title:</label>
-                                        <input type="text" class="form-control" name="title" id="title" autoFocus />
+                                        <input type="text" class="form-control" name="title" id="title" required
+                                            autofocus>
                                     </div>
                                     <div class="mb-3">
                                         <label for="desc" class="col-form-label">description:</label>
@@ -352,13 +392,15 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" id="closeForm"
                                     data-bs-dismiss="modal">Close</button>
-                                <button form="toDoForm" type="submit" class="btn bg-primary">Add</button>
+                                <button form="toDoForm" type="submit" class="btn bg-primary text-white">Add</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Add To Do Element End here -->
-                <!-- To Do Edit Element Start here-->
+            </div>
+            <!-- Add To Do Element End here -->
+            <!-- To Do Edit Element Start here-->
+            <div>
                 <div class="modal fade" id="editToDoModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                     aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
@@ -409,16 +451,15 @@
                         </div>
                     </div>
                 </div>
-                <!-- To Do Edit Element End here-->
-
-                <!-- Core Element Start here-->
-                <!-- Core Element End here-->
-
             </div>
-            <!-- All modals End Here -->
+            <!-- To Do Edit Element End here-->
+
         </div>
+        <!-- All modals End Here -->
     </div>
     <!-- Main App End Here -->
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
