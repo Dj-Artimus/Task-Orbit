@@ -546,7 +546,9 @@ function themeMode() {
         themeMode();
     })
 
+    document.getElementById("offcanvasRight").addEventListener("hidden.bs.offcanvas",()=>{location.reload(true);});
 }
+
 
 load();
 console.log("all good");
